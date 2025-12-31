@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <img src="{{ product.image.url }}" class="img-fluid rounded">
+    </div>
+
+    <div class="col-md-6">
+      <h2>{{ product.name }}</h2>
+      <p>{{ product.description }}</p>
+      <h4 class="text-success">₹{{ product.price }}</h4>
+      {% if not request.user.is_superuser %}
+      {% if product.stock > 0 %}
+      <form method="post" action="{% url 'buy_now' product.id %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label>Quantity</label>
+          <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control w-25">
+        </div>
+
+        <button class="btn btn-success">
+          Buy Now (Cash on Delivery)
+        </button>
+      </form>
+      {% else %}
+      <p class="text-danger fw-bold">Out of Stock</p>
+      {% endif %}
+      {% endif %}
+
+      {% if user.is_superuser %}
+      <hr>
+      <form method="post" action="{% url 'product_delete' product.id %}">
+        {% csrf_token %}
+        <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete this product?');">
+          Delete Product
+        </button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

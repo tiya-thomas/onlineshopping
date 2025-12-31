@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5 text-center">
+  <div class="card shadow p-4">
+    <h2 class="text-success">Order Placed Successfully 🎉</h2>
+
+    <p><strong>Order ID:</strong> {{ order.id }}</p>
+    <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
+
+    <a href="{% url 'my_orders' %}" class="btn btn-primary mt-3">
+      View My Orders
+    </a>
+  </div>
+</div>
+
+{% endblock %}
